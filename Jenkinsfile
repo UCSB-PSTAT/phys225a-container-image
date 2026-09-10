@@ -4,7 +4,7 @@ pipeline {
         upstream(upstreamProjects: 'UCSB-PSTAT GitHub/jupyter-base/main', threshold: hudson.model.Result.SUCCESS)
     }
     environment {
-        IMAGE_NAME = '<COURSE/IMAGE ID HERE>'
+        IMAGE_NAME = 'phys255a'
     }
     stages {
         stage('Build Test Deploy') {
@@ -38,7 +38,15 @@ pipeline {
                 stage('Test') {
                     steps {
                         container('podman') {
-                            //sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME python -c "import <library>;"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep python -c "import awkward"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep python -c "import hist"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep python -c "import uproot"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep python -c "import pythia8"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep python -c "import streamlit"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep python -c "import vector"'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep which delphes'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep which mg5amcnlo'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep which root'
                             sh 'podman run -d --name=$IMAGE_NAME --rm --pull=never -p 8888:8888 localhost/$IMAGE_NAME start-notebook.sh --NotebookApp.token="jenkinstest"'
                             sh 'sleep 10 && curl -v http://localhost:8888/lab?token=jenkinstest 2>&1 | grep -P "HTTP\\S+\\s200\\s+[\\w\\s]+\\s*$"'
                             sh 'curl -v http://localhost:8888/tree?token=jenkinstest 2>&1 | grep -P "HTTP\\S+\\s200\\s+[\\w\\s]+\\s*$"'
