@@ -4,8 +4,8 @@ MAINTAINER LSIT Systems <lsitops@lsit.ucsb.edu>
 
 USER root
 
-RUN mamba install -y -c conda-forge\
-    jupyterthemes jupyter-server-proxy&&\
+RUN mamba install -y -c conda-forge --freeze-installed\
+    jupyterthemes jupyter-server-proxy &&\
     mamba create -n hep -y -c conda-forge -c hep-forge\
     delphes\
     mg5amcnlo\
