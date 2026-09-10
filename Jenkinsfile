@@ -5,6 +5,7 @@ pipeline {
     }
     environment {
         IMAGE_NAME = 'phys255a'
+        CONTAINER_REGISTRY  = 'registry.cloud.college.ucsb.edu'
     }
     stages {
         stage('Build Test Deploy') {
@@ -44,9 +45,9 @@ pipeline {
                             sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep python -c "import pythia8"'
                             sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep python -c "import streamlit"'
                             sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep python -c "import vector"'
-                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep which delphes'
-                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep which mg5amcnlo'
-                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep which root'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep bash which DelphesLHEF'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep bash which mg5_aMC'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep root --version'
                             sh 'podman run -d --name=$IMAGE_NAME --rm --pull=never -p 8888:8888 localhost/$IMAGE_NAME start-notebook.sh --NotebookApp.token="jenkinstest"'
                             sh 'sleep 10 && curl -v http://localhost:8888/lab?token=jenkinstest 2>&1 | grep -P "HTTP\\S+\\s200\\s+[\\w\\s]+\\s*$"'
                             sh 'curl -v http://localhost:8888/tree?token=jenkinstest 2>&1 | grep -P "HTTP\\S+\\s200\\s+[\\w\\s]+\\s*$"'
@@ -68,12 +69,12 @@ pipeline {
                 stage('Deploy') {
                     when { branch 'main' }
                     environment {
-                        DOCKER_HUB_CREDS = credentials('DockerHubToken')
+                        DOCKER_HUB_CREDS = credentials('harbor-registry-token')
                     }
                     steps {
                         container('podman') {
-                            sh 'skopeo copy containers-storage:localhost/$IMAGE_NAME docker://docker.io/ucsb/$IMAGE_NAME:latest --dest-username $DOCKER_HUB_CREDS_USR --dest-password $DOCKER_HUB_CREDS_PSW'
-                            sh 'skopeo copy containers-storage:localhost/$IMAGE_NAME docker://docker.io/ucsb/$IMAGE_NAME:v$(date "+%Y%m%d") --dest-username $DOCKER_HUB_CREDS_USR --dest-password $DOCKER_HUB_CREDS_PSW'
+                            sh 'skopeo copy containers-storage:localhost/$IMAGE_NAME docker://$CONTAINER_REGISTRY/ucsb/$IMAGE_NAME:latest --dest-username $DOCKER_HUB_CREDS_USR --dest-password $DOCKER_HUB_CREDS_PSW'
+                            sh 'skopeo copy containers-storage:localhost/$IMAGE_NAME docker://$CONTAINER_REGISTRY/ucsb/$IMAGE_NAME:v$(date "+%Y%m%d") --dest-username $DOCKER_HUB_CREDS_USR --dest-password $DOCKER_HUB_CREDS_PSW'
                         }
                     }
                     post {
