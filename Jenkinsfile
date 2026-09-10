@@ -48,6 +48,7 @@ pipeline {
                             sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep bash which DelphesLHEF'
                             sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep bash which mg5_aMC'
                             sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep root --version'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME conda activate hep'
                             sh 'podman run -d --name=$IMAGE_NAME --rm --pull=never -p 8888:8888 localhost/$IMAGE_NAME start-notebook.sh --NotebookApp.token="jenkinstest"'
                             sh 'sleep 10 && curl -v http://localhost:8888/lab?token=jenkinstest 2>&1 | grep -P "HTTP\\S+\\s200\\s+[\\w\\s]+\\s*$"'
                             sh 'curl -v http://localhost:8888/tree?token=jenkinstest 2>&1 | grep -P "HTTP\\S+\\s200\\s+[\\w\\s]+\\s*$"'
