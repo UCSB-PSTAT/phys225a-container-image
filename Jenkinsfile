@@ -4,7 +4,7 @@ pipeline {
         upstream(upstreamProjects: 'UCSB-PSTAT GitHub/jupyter-base/main', threshold: hudson.model.Result.SUCCESS)
     }
     environment {
-        IMAGE_NAME = 'phys255a'
+        IMAGE_NAME = 'phys225a'
         CONTAINER_REGISTRY  = 'registry.cloud.college.ucsb.edu'
     }
     stages {
