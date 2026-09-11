@@ -11,7 +11,6 @@ RUN mamba install -y -c conda-forge --freeze-installed\
     mg5amcnlo\
     mg5amcnlo-pythia8-interface\
     pythia8\
-    pythia\
     root\
     scikit-hep\
     streamlit &&\
