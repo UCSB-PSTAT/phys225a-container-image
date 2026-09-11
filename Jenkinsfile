@@ -47,6 +47,7 @@ pipeline {
                             sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep python -c "import vector"'
                             sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep bash which DelphesLHEF'
                             sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep bash which mg5_aMC'
+                            sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep bash which findingz-ui'
                             sh 'podman run -it --rm --pull=never localhost/$IMAGE_NAME mamba run -n hep root --version'
                             sh 'podman run --rm --pull=never localhost/$IMAGE_NAME bash -c "source /opt/conda/etc/profile.d/conda.sh && conda activate hep"'
                             sh 'podman run -d --name=$IMAGE_NAME --rm --pull=never -p 8888:8888 localhost/$IMAGE_NAME start-notebook.sh --NotebookApp.token="jenkinstest"'
