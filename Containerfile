@@ -21,9 +21,8 @@ RUN mamba install -y -c conda-forge --freeze-installed\
 COPY extra_config.py /tmp/
 
 RUN cat /tmp/extra_config.py >> /etc/jupyter/jupyter_server_config.py &&\
-    curl -O https://streamlit.io/images/brand/streamlit-mark-color.svg --output-dir /opt
-
-RUN jupyter server extension enable --sys-prefix jupyter_server_proxy
-
+    curl -O https://streamlit.io/images/brand/streamlit-mark-color.svg --output-dir /opt &&\
+    echo "source \${CONDA_DIR}/etc/profile.d/conda.sh" >> /etc/bash.bashrc &&\
+    jupyter server extension enable --sys-prefix jupyter_server_proxy
 
 USER $NB_USER
