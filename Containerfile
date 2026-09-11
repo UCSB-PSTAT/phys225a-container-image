@@ -4,6 +4,14 @@ MAINTAINER LSIT Systems <lsitops@lsit.ucsb.edu>
 
 USER root
 
+ENV FINDINGZ_MG5=/opt/conda/envs/hep/MG5_aMC/bin/mg5_aMC \
+    FINDINGZ_PYTHIA8_DIR=/opt/conda/envs/hep \
+    FINDINGZ_DELPHES_DIR=/opt/conda/envs/hep/bin \
+    FINDINGZ_CARD_ROOT=/opt/conda/envs/hep \
+    FINDINGZ_CATALOG_PATH=/home/jovyan/course-materials/config/course_catalog.yaml \
+    FINDINGZ_VARIABLES_PATH=/home/jovyan/course-materials/config/analysis_variables.yaml \
+    FINDINGZ_RUN_ROOT=/home/jovyan/findingz-runs
+
 RUN mamba install -y -c conda-forge --freeze-installed\
     jupyterthemes jupyter-server-proxy &&\
     mamba create -n hep -y -c conda-forge -c hep-forge\
@@ -14,6 +22,7 @@ RUN mamba install -y -c conda-forge --freeze-installed\
     root\
     scikit-hep\
     streamlit &&\
+    mamba run -n hep pip install --no-cache-dir 'git+https://github.com/prateekagrawal/findingz.git#egg=finding-z[hep]' &&\
     mamba clean -afy &&\
     /usr/local/bin/fix-permissions "${CONDA_DIR}" || true
 
