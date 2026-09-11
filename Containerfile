@@ -22,6 +22,8 @@ COPY extra_config.py /tmp/
 RUN cat /tmp/extra_config.py >> /etc/jupyter/jupyter_server_config.py &&\
     curl -O https://streamlit.io/images/brand/streamlit-mark-color.svg --output-dir /opt &&\
     echo "source \${CONDA_DIR}/etc/profile.d/conda.sh" >> /etc/bash.bashrc &&\
+    echo "delphes_path = /opt/conda/envs/hep/bin/" >> /opt/conda/envs/hep/MG5_aMC/input/mg5_configuration.txt &&\
+    echo "1000 = nevents" >> /opt/conda/envs/hep/MG5_aMC/Template/LO/Cards/run_card.dat &&\
     jupyter server extension enable --sys-prefix jupyter_server_proxy
 
 USER $NB_USER
