@@ -23,6 +23,7 @@ RUN mamba install -y -c conda-forge --freeze-installed\
     scikit-hep\
     streamlit &&\
     mamba run -n hep pip install --no-cache-dir 'findingz[hep] @ git+https://github.com/prateekagrawal/findingz.git' &&\
+    rm -rf /home/jovyan/.cache/mamba/proc &&\
     mamba clean -afy &&\
     /usr/local/bin/fix-permissions "${CONDA_DIR}" || true
 
