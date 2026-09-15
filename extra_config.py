@@ -3,11 +3,12 @@ c.ServerProxy.servers = {
         "command": [
             "conda", "run", "-n", "hep",
             "findingz-ui",
-            "--server.port={port}",
+            "--server.port=8501",
             "--server.baseUrlPath={base_url}streamlit/",
             "--server.enableCORS=false",
             "--server.headless=true"
         ],
+        "port": 8501,
         "absolute_url": False,
         "timeout" : 3600,
         "launcher_entry": {
