@@ -1,7 +1,13 @@
 c.ServerProxy.servers = {
-    "streamlit_ui": {
-        "command" : ["conda", "run", "-n", "hep", "findingz-ui --server.port=8501"],
-        "port" : 8501,
+    "streamlit": {
+        "command": [
+            "conda", "run", "-n", "hep",
+            "findingz-ui",
+            "--server.port={port}",
+            "--server.baseUrlPath={base_url}streamlit/",
+            "--server.enableCORS=false",
+            "--server.headless=true"
+        ],
         "absolute_url": False,
         "timeout" : 3600,
         "launcher_entry": {
