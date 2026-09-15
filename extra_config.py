@@ -4,7 +4,6 @@ c.ServerProxy.servers = {
             "conda", "run", "-n", "hep",
             "findingz-ui",
             "--server.port=8501",
-            "--server.baseUrlPath=streamlit",
             "--server.enableCORS=false",
             "--server.headless=true"
         ],
@@ -15,7 +14,6 @@ c.ServerProxy.servers = {
                 "enabled": True,
                 "icon_path": "/opt/streamlit-mark-color.svg",
                 "title": "Streamlit UI",
-                "path_info": "streamlit/"
         },
         "new_browser_tab": False
     }
