@@ -4,7 +4,7 @@ c.ServerProxy.servers = {
             "conda", "run", "-n", "hep",
             "findingz-ui",
             "--server.port=8501",
-            "--server.baseUrlPath={base_url}streamlit/",
+            "--server.baseUrlPath=streamlit",
             "--server.enableCORS=false",
             "--server.headless=true"
         ],
