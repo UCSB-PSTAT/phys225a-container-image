@@ -53,6 +53,8 @@ pipeline {
                             sh 'podman run -d --name=$IMAGE_NAME --rm --pull=never -p 8888:8888 localhost/$IMAGE_NAME start-notebook.sh --NotebookApp.token="jenkinstest"'
                             sh 'sleep 10 && curl -v http://localhost:8888/lab?token=jenkinstest 2>&1 | grep -P "HTTP\\S+\\s200\\s+[\\w\\s]+\\s*$"'
                             sh 'curl -v http://localhost:8888/tree?token=jenkinstest 2>&1 | grep -P "HTTP\\S+\\s200\\s+[\\w\\s]+\\s*$"'
+                            sh 'podman run -d --name=$IMAGE_NAME --rm --pull=never -p 8501:8501 localhost/$IMAGE_NAME conda run -n hep findingz-ui --server.port=8501'
+                            sh 'sleep 10 && curl -v http://localhost:8501/ 2>&1 | grep -P "HTTP\\S+\\s200\\s+[\\w\\s]+\\s*$"'
                         }
                     }
                     post {
